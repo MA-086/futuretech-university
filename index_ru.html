@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Познакомьтесь с FutureTech University — вымышленным университетом, посвящённым информатике, искусственному интеллекту, кибербезопасности и инженерии.">
+  <title>FutureTech University | Создавайте будущее</title>
+  <style>
+    /* ---------- Основа и палитра ---------- */
+    :root {
+      --navy: #0b1224;
+      --navy-soft: #121d35;
+      --blue: #4f7cff;
+      --cyan: #55d6d0;
+      --ink: #17223b;
+      --muted: #65708a;
+      --paper: #f5f7fc;
+      --white: #ffffff;
+      --border: #e4e9f3;
+      --radius: 22px;
+      --shadow: 0 18px 50px rgba(22, 35, 67, .09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .section { padding: 96px 0; }
+    .section-heading { max-width: 690px; margin: 0 auto 46px; text-align: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--blue); font-size: .78rem; font-weight: 800;
+      letter-spacing: .13em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--cyan); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(2.65rem, 6vw, 4.8rem); line-height: 1.05; letter-spacing: -.055em; }
+    h2 { margin: 13px 0 16px; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.13; letter-spacing: -.04em; }
+    h3 { line-height: 1.25; }
+    .section-heading p, .muted { color: var(--muted); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 48px; padding: 12px 21px; border: 1px solid transparent;
+      border-radius: 12px; font-weight: 750; cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: #fff; background: var(--blue); box-shadow: 0 10px 24px rgba(79,124,255,.25); }
+    .btn-primary:hover { background: #3e68e8; }
+    .btn-outline { border-color: rgba(255,255,255,.25); color: #fff; background: rgba(255,255,255,.06); }
+    .btn-light { color: var(--navy); background: #fff; }
+    .btn:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+      outline: 3px solid var(--cyan); outline-offset: 3px;
+    }
+
+    /* ---------- Навигация ---------- */
+    .site-header {
+      position: sticky; top: 0; z-index: 100; background: rgba(11,18,36,.94);
+      backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.09);
+    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: #fff; font-weight: 850; letter-spacing: -.03em; white-space: nowrap; }
+    .brand-mark {
+      display: grid; place-items: center; width: 39px; height: 39px; border-radius: 12px;
+      color: #081226; background: linear-gradient(135deg, var(--cyan), #9ce9ff); font-weight: 950;
+    }
+    .brand small { display: block; color: #aab6d1; font-size: .65rem; font-weight: 600; letter-spacing: .12em; }
+    .nav-links { display: flex; align-items: center; gap: 25px; color: #d6def0; font-size: .9rem; }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-cta { padding: 10px 16px; border-radius: 10px; color: #fff; background: var(--blue); font-weight: 750; }
+    .menu-toggle { display: none; border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 8px 11px; color: #fff; background: transparent; cursor: pointer; }
+
+    /* ---------- Главный экран ---------- */
+    .hero {
+      position: relative; overflow: hidden; color: #fff;
+      background:
+        radial-gradient(circle at 80% 18%, rgba(79,124,255,.25), transparent 28%),
+        radial-gradient(circle at 70% 90%, rgba(85,214,208,.13), transparent 32%),
+        var(--navy);
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .15;
+      background-image: linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px);
+      background-size: 48px 48px; mask-image: linear-gradient(to right, transparent, #000);
+    }
+    .hero-grid { position: relative; display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: 55px; padding-top: 86px; padding-bottom: 90px; }
+    .hero .eyebrow { color: var(--cyan); }
+    .hero h1 { margin: 19px 0 24px; }
+    .gradient-text { color: transparent; background: linear-gradient(90deg, #74e5df, #8daaff 75%); background-clip: text; -webkit-background-clip: text; }
+    .hero-copy { max-width: 560px; color: #c2cbe0; font-size: 1.08rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 30px; }
+    .hero-note { margin: 20px 0 0; color: #a7b4d0; font-size: .83rem; }
+    .hero-visual { position: relative; min-height: 390px; display: grid; place-items: center; }
+    .orbit { position: absolute; width: min(100%, 410px); aspect-ratio: 1; border: 1px solid rgba(130,163,255,.24); border-radius: 50%; }
+    .orbit::before, .orbit::after { content: ""; position: absolute; border: 1px solid rgba(130,163,255,.19); border-radius: 50%; inset: 12%; }
+    .orbit::after { inset: 25%; }
+    .tech-core {
+      position: relative; z-index: 1; width: 205px; height: 205px; display: grid; place-items: center;
+      border-radius: 42px; transform: rotate(-7deg);
+      background: linear-gradient(145deg, rgba(79,124,255,.28), rgba(85,214,208,.12));
+      border: 1px solid rgba(164,198,255,.42); box-shadow: 0 0 80px rgba(79,124,255,.2), inset 0 0 35px rgba(85,214,208,.08);
+    }
+    .tech-core span { font-size: 5.4rem; font-weight: 900; color: #e8f5ff; transform: rotate(7deg); text-shadow: 0 0 32px rgba(85,214,208,.55); }
+    .float-card {
+      position: absolute; z-index: 2; display: flex; align-items: center; gap: 11px;
+      padding: 14px 17px; border: 1px solid rgba(255,255,255,.15); border-radius: 15px;
+      background: rgba(20,32,58,.87); box-shadow: 0 15px 40px rgba(0,0,0,.2); backdrop-filter: blur(12px);
+    }
+    .float-card strong { display: block; font-size: .9rem; }
+    .float-card small { color: #aebbd5; font-size: .76rem; }
+    .float-icon { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 11px; background: rgba(85,214,208,.13); color: var(--cyan); font-size: 1.25rem; }
+    .float-one { top: 9%; right: 0; }
+    .float-two { bottom: 10%; left: 0; }
+    .hero-bottom { position: relative; border-top: 1px solid rgba(255,255,255,.1); }
+    .hero-bottom-inner { display: flex; justify-content: space-between; align-items: center; gap: 22px; padding: 22px 0; color: #aab6d1; font-size: .84rem; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 20px; }
+    .hero-tags span::before { content: "✦"; color: var(--cyan); margin-right: 8px; }
+
+    /* ---------- О нас ---------- */
+    .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 70px; }
+    .about-art { min-height: 390px; position: relative; display: grid; place-items: center; overflow: hidden; border-radius: 28px; background: linear-gradient(145deg, #e7edff, #e2fbf8); }
+    .about-art::before { content: ""; position: absolute; width: 280px; height: 280px; border-radius: 50%; border: 1px solid rgba(79,124,255,.3); }
+    .about-art::after { content: ""; position: absolute; width: 210px; height: 210px; border-radius: 50%; border: 1px dashed rgba(79,124,255,.35); }
+    .building { position: relative; z-index: 1; width: 190px; height: 205px; padding: 17px; border-radius: 12px 12px 5px 5px; background: linear-gradient(135deg, #243a71, #101b37); box-shadow: 18px 22px 0 rgba(79,124,255,.12); }
+    .building-top { height: 28px; margin: -17px -17px 15px; border-radius: 12px 12px 0 0; background: var(--blue); }
+    .windows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .windows span { height: 27px; border-radius: 4px; background: linear-gradient(135deg, #8ee9e1, #7ca2ff); opacity: .9; }
+    .building-door { width: 35px; height: 43px; margin: 14px auto 0; border-radius: 5px 5px 0 0; background: #8daaff; }
+    .about-sticker { position: absolute; z-index: 2; bottom: 23px; left: 22px; padding: 12px 16px; border-radius: 13px; background: #fff; box-shadow: var(--shadow); font-size: .84rem; font-weight: 800; }
+    .about-copy p { color: var(--muted); }
+    .check-list { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin: 25px 0 30px; padding: 0; list-style: none; }
+    .check-list li { display: flex; gap: 9px; align-items: flex-start; font-weight: 650; font-size: .92rem; }
+    .check-list li::before { content: "✓"; display: grid; place-items: center; flex: 0 0 22px; width: 22px; height: 22px; border-radius: 7px; color: #0b726e; background: #d9f8f3; font-size: .78rem; }
+
+    /* ---------- Направления ---------- */
+    .programs { background: var(--paper); }
+    .program-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .program-card { padding: 25px 22px; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; transition: transform .25s, box-shadow .25s, border-color .25s; }
+    .program-card:hover { transform: translateY(-6px); border-color: #c7d4ff; box-shadow: var(--shadow); }
+    .program-icon { display: grid; place-items: center; width: 54px; height: 54px; margin-bottom: 24px; border-radius: 16px; background: #edf1ff; font-size: 1.55rem; }
+    .program-card:nth-child(2) .program-icon { background: #e0faf6; }
+    .program-card:nth-child(3) .program-icon { background: #fff0e4; }
+    .program-card:nth-child(4) .program-icon { background: #f3eaff; }
+    .program-card h3 { margin-bottom: 10px; font-size: 1.13rem; }
+    .program-card p { min-height: 82px; color: var(--muted); font-size: .91rem; }
+    .text-link { display: inline-flex; align-items: center; gap: 8px; color: var(--blue); font-size: .9rem; font-weight: 800; }
+    .text-link:hover { gap: 12px; }
+
+    /* ---------- Преимущества ---------- */
+    .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .benefit { padding: 10px 7px; }
+    .benefit-icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 18px; border-radius: 14px; color: #345be0; background: #edf1ff; font-size: 1.35rem; }
+    .benefit h3 { margin-bottom: 9px; font-size: 1.1rem; }
+    .benefit p { color: var(--muted); font-size: .94rem; }
+
+    /* ---------- Студенческая жизнь / отзывы ---------- */
+    .student-life { color: #fff; background: var(--navy); }
+    .student-life .section-heading p { color: #b4bfd6; }
+    .life-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+    .life-panel { position: relative; overflow: hidden; min-height: 280px; padding: 32px; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); background: linear-gradient(135deg, rgba(79,124,255,.2), rgba(85,214,208,.07)); }
+    .life-panel h3 { font-size: 1.5rem; }
+    .life-panel p { color: #bdc8de; }
+    .life-symbol { font-size: 3rem; margin-bottom: 25px; }
+    .life-pills { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    .life-pills span { padding: 7px 11px; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; color: #dce6f7; font-size: .8rem; }
+    .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px; }
+    .quote-card { padding: 24px; border-radius: 18px; background: #fff; color: var(--ink); }
+    .quote-mark { color: var(--blue); font-size: 2rem; line-height: 1; font-weight: 900; }
+    .quote-card blockquote { margin: 12px 0 20px; color: #4d5872; font-size: .92rem; }
+    .student { display: flex; align-items: center; gap: 11px; }
+    .avatar { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #d8e2ff, #c7f6ef); color: #1d3b76; font-weight: 900; }
+    .student strong { display: block; font-size: .88rem; }
+    .student small { display: block; color: var(--muted); font-size: .77rem; }
+    .fiction-note { margin: 16px 0 0; color: #aab6d1; font-size: .8rem; }
+
+    /* ---------- Контакты ---------- */
+    .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 55px; align-items: start; }
+    .contact-copy p { color: var(--muted); }
+    .contact-info { display: grid; gap: 16px; margin-top: 28px; }
+    .contact-item { display: flex; gap: 13px; align-items: flex-start; }
+    .contact-item .program-icon { flex: 0 0 46px; width: 46px; height: 46px; margin: 0; font-size: 1.1rem; }
+    .contact-item strong { display: block; }
+    .contact-item span { color: var(--muted); font-size: .88rem; }
+    .contact-form { padding: 30px; border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); background: #fff; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { margin-bottom: 17px; }
+    .field label { display: block; margin-bottom: 7px; font-size: .88rem; font-weight: 750; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 12px 13px; border: 1px solid #dce3ef; border-radius: 10px;
+      background: #fbfcff; color: var(--ink); outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(79,124,255,.12); }
+    .field textarea { min-height: 120px; resize: vertical; }
+    .form-note { margin: 13px 0 0; color: var(--muted); font-size: .78rem; }
+    .form-status { display: none; margin-top: 16px; padding: 12px 14px; border-radius: 10px; color: #125b4d; background: #e1f8f0; font-size: .9rem; }
+    .form-status.show { display: block; }
+
+    /* ---------- Подвал ---------- */
+    footer { color: #c0c9dc; background: #080e1c; }
+    .footer-main { display: flex; justify-content: space-between; gap: 40px; padding: 38px 0; }
+    .footer-main p { max-width: 390px; margin: 14px 0 0; color: #929fb9; font-size: .88rem; }
+    .footer-links { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 18px; font-size: .88rem; }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-bottom { display: flex; justify-content: space-between; gap: 20px; padding: 18px 0; border-top: 1px solid rgba(255,255,255,.1); color: #8794ae; font-size: .78rem; }
+    .demo-disclaimer { color: #ffd98b; }
+
+    /* ---------- Адаптивность ---------- */
+    @media (max-width: 980px) {
+      .nav-links { gap: 15px; font-size: .84rem; }
+      .hero-grid { gap: 25px; }
+      .program-grid { grid-template-columns: repeat(2, 1fr); }
+      .program-card p { min-height: auto; }
+      .about-grid { gap: 40px; }
+    }
+    @media (max-width: 760px) {
+      .section { padding: 72px 0; }
+      .menu-toggle { display: inline-flex; align-items: center; gap: 8px; }
+      .nav { min-height: 70px; }
+      .nav-links {
+        display: none; position: absolute; top: 70px; left: 0; right: 0; padding: 20px;
+        flex-direction: column; align-items: stretch; gap: 0; background: var(--navy);
+        border-bottom: 1px solid rgba(255,255,255,.12);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 8px; }
+      .nav-cta { margin-top: 8px; text-align: center; }
+      .hero-grid { grid-template-columns: 1fr; padding-top: 68px; padding-bottom: 50px; }
+      .hero-visual { min-height: 330px; }
+      .orbit { width: 300px; }
+      .tech-core { width: 155px; height: 155px; border-radius: 32px; }
+      .tech-core span { font-size: 4.2rem; }
+      .float-one { right: 2%; top: 3%; }
+      .float-two { left: 1%; bottom: 3%; }
+      .hero-bottom-inner { align-items: flex-start; flex-direction: column; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 35px; }
+      .about-art { min-height: 320px; }
+      .benefits-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      .life-grid { grid-template-columns: 1fr; }
+      .testimonial-grid { grid-template-columns: 1fr; }
+      .contact-form { padding: 23px; }
+      .footer-main, .footer-bottom { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .container { width: min(100% - 28px, 1120px); }
+      h1 { font-size: 2.55rem; }
+      .hero-actions .btn { width: 100%; }
+      .hero-visual { min-height: 290px; }
+      .float-card { padding: 10px 11px; gap: 8px; }
+      .float-icon { width: 32px; height: 32px; }
+      .float-card strong { font-size: .78rem; }
+      .float-card small { font-size: .68rem; }
+      .program-grid, .benefits-grid, .check-list, .form-row { grid-template-columns: 1fr; }
+      .program-card { padding: 22px; }
+      .life-panel { padding: 25px; }
+      .contact-form { padding: 19px; }
+      .footer-links { gap: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Главная навигация -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Главная навигация">
+      <a class="brand" href="#accueil" aria-label="FutureTech University, главная">
+        <span class="brand-mark">F</span>
+        <span>FutureTech <small>UNIVERSITY</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Открыть меню">☰ <span>Меню</span></button>
+      <div class="nav-links" id="navLinks">
+        <a href="#apropos">Университет</a>
+        <a href="#formations">Направления</a>
+        <a href="#avantages">Преимущества</a>
+        <a href="#vie-etudiante">Студенческая жизнь</a>
+        <a href="#contact" class="nav-cta">Контакты ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. Главный экран -->
+    <section class="hero" id="accueil">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Инновации начинаются здесь</span>
+          <h1>Представьте завтра.<br><span class="gradient-text">Создайте будущее.</span></h1>
+          <p class="hero-copy">Развивайте навыки, которые выделят вас среди других. Изучайте информатику, искусственный интеллект, кибербезопасность и инженерию в среде, ориентированной на инновации.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#formations">Узнать о направлениях <span aria-hidden="true">→</span></a>
+            <a class="btn btn-outline" href="#apropos">Об университете</a>
+          </div>
+          <p class="hero-note">Вымышленный учебный проект, созданный для презентации технологического университета.</p>
+        </div>
+        <div class="hero-visual" aria-label="Абстрактная иллюстрация на тему технологий">
+          <div class="orbit"></div>
+          <div class="tech-core"><span>F<span style="color:#55d6d0">+</span></span></div>
+          <div class="float-card float-one">
+            <span class="float-icon">⌘</span>
+            <span><strong>Технологии</strong><small>Учимся, создавая</small></span>
+          </div>
+          <div class="float-card float-two">
+            <span class="float-icon">✧</span>
+            <span><strong>Дух инноваций</strong><small>От идей к проектам</small></span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-bottom">
+        <div class="container hero-bottom-inner">
+          <span>Навыки для меняющегося мира</span>
+          <div class="hero-tags"><span>Цифровые технологии</span><span>Инженерия</span><span>Творчество</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. О нас -->
+    <section class="section" id="apropos">
+      <div class="container about-grid">
+        <div class="about-art" role="img" aria-label="Стилизованная иллюстрация здания университета">
+          <div class="building">
+            <div class="building-top"></div>
+            <div class="windows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="building-door"></div>
+          </div>
+          <div class="about-sticker">Учиться · Творить · Достигать</div>
+        </div>
+        <div class="about-copy">
+          <span class="eyebrow">О нас</span>
+          <h2>Университет, созданный для вызовов завтрашнего дня.</h2>
+          <p>FutureTech University — вымышленный университет, посвящённый компьютерным наукам, инженерии и цифровым технологиям. Наш педагогический подход сочетает теоретические основы, практику и решение реальных задач.</p>
+          <p>Мы представляем среду, где поощряется любопытство, студенты учатся сотрудничать, а каждый проект становится возможностью для роста.</p>
+          <ul class="check-list">
+            <li>Обучение через проекты</li>
+            <li>Культура инноваций</li>
+            <li>Работа в команде</li>
+            <li>Цифровые компетенции</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">Обсудим ваш проект ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Направления -->
+    <section class="section programs" id="formations">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Наши направления</span>
+          <h2>Выберите свой технологический путь.</h2>
+          <p>Четыре ключевых направления помогут вам раскрыть свои интересы и развить навыки, востребованные в цифровых профессиях.</p>
+        </div>
+        <div class="program-grid">
+          <article class="program-card">
+            <div class="program-icon" aria-hidden="true">⌨️</div>
+            <h3>Информатика</h3>
+            <p>Изучайте программирование, базы данных, веб-разработку и проектирование программного обеспечения.</p>
+            <a class="text-link" href="#contact" data-course="Информатика">Подробнее <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="program-card">
+            <div class="program-icon" aria-hidden="true">✦</div>
+            <h3>Искусственный интеллект</h3>
+            <p>Исследуйте данные, машинное обучение и интеллектуальные системы будущего.</p>
+            <a class="text-link" href="#contact" data-course="Искусственный интеллект">Подробнее <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="program-card">
+            <div class="program-icon" aria-hidden="true">◈</div>
+            <h3>Кибербезопасность</h3>
+            <p>Познакомьтесь с сетями, анализом рисков и методами защиты компьютерных систем.</p>
+            <a class="text-link" href="#contact" data-course="Кибербезопасность">Подробнее <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="program-card">
+            <div class="program-icon" aria-hidden="true">⚙️</div>
+            <h3>Инженерия</h3>
+            <p>Развивайте системный подход к проектированию, тестированию и улучшению технических решений.</p>
+            <a class="text-link" href="#contact" data-course="Инженерия">Подробнее <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Преимущества -->
+    <section class="section" id="avantages">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Почему FutureTech?</span>
+          <h2>Больше, чем диплом: опыт для роста.</h2>
+          <p>Подход, который объединяет знания, креативность и подготовку к профессиональной жизни.</p>
+        </div>
+        <div class="benefits-grid">
+          <article class="benefit">
+            <div class="benefit-icon" aria-hidden="true">🧩</div>
+            <h3>Реальные проекты</h3>
+            <p>Превращайте полученные знания в прототипы, приложения и решения реальных или смоделированных задач.</p>
+          </article>
+          <article class="benefit">
+            <div class="benefit-icon" aria-hidden="true">🧠</div>
+            <h3>Критическое мышление</h3>
+            <p>Учитесь анализировать, экспериментировать и принимать взвешенные решения перед лицом технологических вызовов.</p>
+          </article>
+          <article class="benefit">
+            <div class="benefit-icon" aria-hidden="true">🤝</div>
+            <h3>Сотрудничество</h3>
+            <p>Развивайте умение общаться, делиться идеями и работать в команде.</p>
+          </article>
+          <article class="benefit">
+            <div class="benefit-icon" aria-hidden="true">🚀</div>
+            <h3>Культура инноваций</h3>
+            <p>Осваивайте новые технологии и учитесь ответственно развивать свои идеи.</p>
+          </article>
+          <article class="benefit">
+            <div class="benefit-icon" aria-hidden="true">🌍</div>
+            <h3>Открытость миру</h3>
+            <p>Готовьтесь работать в международной цифровой отрасли, которая постоянно меняется.</p>
+          </article>
+          <article class="benefit">
+            <div class="benefit-icon" aria-hidden="true">📚</div>
+            <h3>Непрерывное обучение</h3>
+            <p>Выработайте методы работы, которые помогут вам учиться и адаптироваться на протяжении всей карьеры.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Студенческая жизнь и вымышленные отзывы -->
+    <section class="section student-life" id="vie-etudiante">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Студенческая жизнь</span>
+          <h2>Учиться вместе. Двигаться дальше.</h2>
+          <p>Университетская жизнь — это ещё и обмен идеями, участие в проектах и новые знакомства.</p>
+        </div>
+        <div class="life-grid">
+          <article class="life-panel">
+            <div class="life-symbol" aria-hidden="true">💡</div>
+            <h3>Воплощайте свои идеи</h3>
+            <p>Представьте мастерские по программированию, технологические клубы, творческие челленджи и командные проекты — обучение по-новому.</p>
+            <div class="life-pills"><span>Технологические клубы</span><span>Хакатоны</span><span>Командные проекты</span></div>
+          </article>
+          <article class="life-panel">
+            <div class="life-symbol" aria-hidden="true">🌱</div>
+            <h3>Развивайтесь в своём темпе</h3>
+            <p>Тренируйтесь представлять свои идеи, просить о помощи, делиться знаниями и радоваться общим успехам.</p>
+            <div class="life-pills"><span>Наставничество</span><span>Взаимопомощь</span><span>Креативность</span></div>
+          </article>
+        </div>
+        <div class="testimonial-grid">
+          <article class="quote-card">
+            <div class="quote-mark" aria-hidden="true">“</div>
+            <blockquote>Командные проекты помогают мне понять, как превратить идею в работающее приложение.</blockquote>
+            <div class="student"><div class="avatar">АМ</div><div><strong>Алексей М.</strong><small>Студент направления «Информатика» — вымышленный пример</small></div></div>
+          </article>
+          <article class="quote-card">
+            <div class="quote-mark" aria-hidden="true">“</div>
+            <blockquote>Мне нравится исследовать данные и размышлять о возможных способах применения искусственного интеллекта.</blockquote>
+            <div class="student"><div class="avatar">СЛ</div><div><strong>Софья Л.</strong><small>Студентка направления «ИИ» — вымышленный пример</small></div></div>
+          </article>
+          <article class="quote-card">
+            <div class="quote-mark" aria-hidden="true">“</div>
+            <blockquote>Практические задания побуждают меня искать, пробовать решения и учиться на своих ошибках.</blockquote>
+            <div class="student"><div class="avatar">МК</div><div><strong>Максим К.</strong><small>Студент направления «Кибербезопасность» — вымышленный пример</small></div></div>
+          </article>
+        </div>
+        <p class="fiction-note">Важно: приведённые выше отзывы — вымышленные примеры, созданные для макета. Они не принадлежат реальным студентам.</p>
+      </div>
+    </section>
+
+    <!-- 6. Контакты -->
+    <section class="section" id="contact">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <span class="eyebrow">Оставайтесь на связи</span>
+          <h2>Ваш следующий шаг начинается здесь.</h2>
+          <p>Есть вопрос о направлениях обучения или об этом макете? Воспользуйтесь формой. Контактные данные ниже — примеры и не относятся к реальному учреждению.</p>
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="program-icon" aria-hidden="true">✉</div>
+              <div><strong>Демонстрационный адрес электронной почты</strong><span>contact@example.com</span></div>
+            </div>
+            <div class="contact-item">
+              <div class="program-icon" aria-hidden="true">⌖</div>
+              <div><strong>Расположение</strong><span>Вымышленный адрес — будет указан позже</span></div>
+            </div>
+            <div class="contact-item">
+              <div class="program-icon" aria-hidden="true">◷</div>
+              <div><strong>Часы работы</strong><span>Только демонстрационная информация</span></div>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <h3>Отправьте нам сообщение</h3>
+          <p class="muted">Все поля, отмеченные *, обязательны для заполнения.</p>
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Полное имя *</label>
+              <input id="name" name="name" type="text" placeholder="Ваше имя" autocomplete="name" required minlength="2">
+            </div>
+            <div class="field">
+              <label for="email">Адрес электронной почты *</label>
+              <input id="email" name="email" type="email" placeholder="vy@example.com" autocomplete="email" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="interest">Интересующее направление *</label>
+            <select id="interest" name="interest" required>
+              <option value="">Выберите направление</option>
+              <option>Информатика</option>
+              <option>Искусственный интеллект</option>
+              <option>Кибербезопасность</option>
+              <option>Инженерия</option>
+              <option>Другой вопрос</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="message">Ваше сообщение *</label>
+            <textarea id="message" name="message" placeholder="Напишите ваше сообщение здесь..." required minlength="10"></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Проверить форму <span aria-hidden="true">→</span></button>
+          <p class="form-note">Демонстрационный макет: никакие данные не отправляются и не сохраняются.</p>
+          <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Подвал -->
+  <footer>
+    <div class="container footer-main">
+      <div>
+        <a class="brand" href="#accueil"><span class="brand-mark">F</span><span>FutureTech <small>UNIVERSITY</small></span></a>
+        <p>Вымышленный университет, посвящённый информатике, инженерии и цифровым технологиям.</p>
+      </div>
+      <div class="footer-links" aria-label="Ссылки в подвале">
+        <a href="#apropos">О нас</a>
+        <a href="#formations">Направления</a>
+        <a href="#avantages">Преимущества</a>
+        <a href="#vie-etudiante">Студенческая жизнь</a>
+        <a href="#contact">Контакты</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> FutureTech University — вымышленный макет.</span>
+      <span class="demo-disclaimer">Реальные данные учреждения не представлены.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Мобильное меню: открытие/закрытие и закрытие после выбора ссылки.
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Закрыть меню' : 'Открыть меню');
+      menuToggle.firstChild.textContent = isOpen ? '✕ ' : '☰ ';
+    });
+
+    navLinks.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Открыть меню');
+        menuToggle.firstChild.textContent = '☰ ';
+      });
+    });
+
+    // Ссылки направлений заранее выбирают нужное направление в форме.
+    document.querySelectorAll('[data-course]').forEach((link) => {
+      link.addEventListener('click', () => {
+        document.getElementById('interest').value = link.dataset.course;
+      });
+    });
+
+    // Форма проверяет поля в браузере и не передаёт данные.
+    const contactForm = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
+
+    contactForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      formStatus.classList.remove('show');
+
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+
+      formStatus.textContent = 'Проверка пройдена! Это демонстрация: ваше сообщение не было отправлено.';
+      formStatus.classList.add('show');
+      contactForm.reset();
+    });
+
+    // Год в подвале обновляется автоматически.
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
